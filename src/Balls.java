@@ -132,7 +132,7 @@ public class Balls extends Canvas implements Runnable {
 
         Balls.get(i).SpeedY+=Timedif*Gravity;
 
-        Timething=((-1*(Balls.get(i).SpeedY)-Math.sqrt((Balls.get(i).SpeedY*Balls.get(i).SpeedY)+(2*Gravity*Balls.get(i).Y)))/Gravity)*-1;
+        Timething=(2*SpeedY)/Gravity;
 
         Balls.get(i).SpeedY-=Timething*Gravity;
         Balls.get(i).Y+=SpeedY*Timething;
@@ -144,14 +144,18 @@ public class Balls extends Canvas implements Runnable {
         Balls.get(i).SpeedY*=-1;
         Balls.get(i).SpeedY*=BouncyNumber;
         Balls.get(i).SpeedY+=Timething*Gravity;
+        Balls.get(i).SpeedX*=0.9;
         Balls.get(i).Y+=Balls.get(i).SpeedY*Timething;
-        if (Balls.get(i).SpeedY<3){
+        if (Balls.size()<100)
+        Balls.add(new Ball(Balls.get(i).X,Balls.get(i).Y,Balls.get(i).SpeedX*-1,Balls.get(i).SpeedY));
+        if (Balls.get(i).SpeedY<5){
             Balls.get(i).SpeedY=0;
             Balls.get(i).Y=0;
             Balls.get(i).Standstill =true;
         }
         System.out.println("| "+Balls.get(i).Y+" m| "+Balls.get(i).SpeedY+" m/s| " +(counter*Timedif)+" t|");
-        Balls.get(i).SpeedX*=0.9;
+
+
 
 
 
@@ -229,6 +233,7 @@ public class Balls extends Canvas implements Runnable {
         @Override
         public void keyTyped(KeyEvent e) {
             if (e.getKeyChar() == 'e' || e.getKeyChar() == 'E') {
+
 
                 Balls.add(new Ball( PositonX+Math.random()*60-30,Height+Math.random()*60-30,SpeedX,SpeedY));
                 Balls.add(new Ball( PositonX+Math.random()*60-30,Height+Math.random()*60-30,SpeedX,SpeedY));
