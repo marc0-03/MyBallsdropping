@@ -72,6 +72,9 @@ public class Balls extends Canvas implements Runnable {
                 Speedupdate();
                 Heightupdate();
                 PosistionXupdate();
+                if (Balls.get(i).StandstillX && Balls.get(i).Standstill){
+                    Balls.remove(i);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(null, "Time constraint reached\n   Simulation complete");
@@ -95,7 +98,7 @@ public class Balls extends Canvas implements Runnable {
 
         g.setColor(Color.red);
         for (i=0; i<Balls.size();i++) {
-            g.fillOval((int) Balls.get(i).X, 780- ((int)Balls.get(i).Y-10), 10,10);
+            g.fillOval((int) Balls.get(i).X-5, 780- ((int)Balls.get(i).Y-10), 10,10);
         }
 
 
@@ -119,7 +122,7 @@ public class Balls extends Canvas implements Runnable {
                 CheckBounce();
             }
         } else {
-            System.out.println("| "+Balls.get(i).Y+" m| "+Balls.get(i).SpeedY+" m/s| " +(counter*Timedif)+" t| |StandstillY");
+            System.out.println("| 0 m| 0 m/s| " +(counter*Timedif)+" t| |StandstillY");
             Balls.get(i).SpeedX*=0.95;
             if (Balls.get(i).SpeedX>-0.01&&Balls.get(i).SpeedX<0.01){
                 Balls.get(i).SpeedX=0;
@@ -129,11 +132,8 @@ public class Balls extends Canvas implements Runnable {
     }
 
     public void CheckBounce(){
-
         Balls.get(i).SpeedY+=Timedif*Gravity;
-
         Timething=(2*SpeedY)/Gravity;
-
         Balls.get(i).SpeedY-=Timething*Gravity;
         Balls.get(i).Y+=SpeedY*Timething;
 
@@ -144,42 +144,33 @@ public class Balls extends Canvas implements Runnable {
         Balls.get(i).SpeedY*=-1;
         Balls.get(i).SpeedY*=BouncyNumber;
         Balls.get(i).SpeedY+=Timething*Gravity;
-        Balls.get(i).SpeedX*=0.9;
         Balls.get(i).Y+=Balls.get(i).SpeedY*Timething;
-        if (Balls.size()<100)
-        Balls.add(new Ball(Balls.get(i).X,Balls.get(i).Y,Balls.get(i).SpeedX*-1,Balls.get(i).SpeedY));
+
         if (Balls.get(i).SpeedY<5){
             Balls.get(i).SpeedY=0;
             Balls.get(i).Y=0;
             Balls.get(i).Standstill =true;
         }
+
         System.out.println("| "+Balls.get(i).Y+" m| "+Balls.get(i).SpeedY+" m/s| " +(counter*Timedif)+" t|");
-
-
-
-
-
     }
 
     public void PosistionXupdate(){
         if (Balls.get(i).StandstillX==false) {
-            if (Balls.get(i).X + Balls.get(i).SpeedX * Timedif < 0 || Balls.get(i).X + Balls.get(i).SpeedX * Timedif > 1190) {
+            if (Balls.get(i).X + Balls.get(i).SpeedX * Timedif < 0 || Balls.get(i).X + Balls.get(i).SpeedX * Timedif > 1200) {
                 BounceX();
             } else {
                 Balls.get(i).X += Balls.get(i).SpeedX * Timedif;
                 System.out.println("| "+Balls.get(i).X+" m| "+Balls.get(i).SpeedX+" m/s| " +(counter*Timedif)+" t|");
             }
         } else {
-            System.out.println("| "+Balls.get(i).X+" m| "+Balls.get(i).SpeedX+" m/s| " +(counter*Timedif)+" t| |StandstillX");
-            if (Balls.get(i).StandstillX && Balls.get(i).Standstill){
-                Balls.remove(i);
-            }
+            System.out.println("| "+Balls.get(i).X+" m| 0 m/s| " +(counter*Timedif)+" t| |StandstillX");
         }
     }
 
     public void BounceX(){
         if (Balls.get(i).X>600){
-            Timething=((1190-Balls.get(i).X)/Balls.get(i).SpeedX);
+            Timething=((1200-Balls.get(i).X)/Balls.get(i).SpeedX);
         } else {
             Timething=(Balls.get(i).X/Balls.get(i).SpeedX);
         }
@@ -234,10 +225,9 @@ public class Balls extends Canvas implements Runnable {
         public void keyTyped(KeyEvent e) {
             if (e.getKeyChar() == 'e' || e.getKeyChar() == 'E') {
 
-
-                Balls.add(new Ball( PositonX+Math.random()*60-30,Height+Math.random()*60-30,SpeedX,SpeedY));
-                Balls.add(new Ball( PositonX+Math.random()*60-30,Height+Math.random()*60-30,SpeedX,SpeedY));
-                Balls.add(new Ball( PositonX+Math.random()*60-30,Height+Math.random()*60-30,SpeedX,SpeedY));
+                for (int b=0; b<20; b++) {
+                    Balls.add(new Ball(getMousePosition().x + Math.random()*60-30, 780-(getMousePosition().y + Math.random() * 60 - 30), SpeedX, SpeedY));
+                }
             }
 
             if (e.getKeyChar() == 'p' || e.getKeyChar() == 'P') {
